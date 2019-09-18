@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Homework2</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="gopher_image_description">Gopher image</string>
+    <string name="switch_language">Switch language</string>
+    <string name="refresh">Refresh</string>
+</resources>

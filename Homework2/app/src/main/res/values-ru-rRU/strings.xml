@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Homework2</string>
+    <string name="hello_world">Привет Мир!</string>
+    <string name="gopher_image_description">Изображение хомяка</string>
+    <string name="switch_language">Сменить язык</string>
+    <string name="refresh">Обновить</string>
+</resources>
