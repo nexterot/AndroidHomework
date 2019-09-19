@@ -4,4 +4,6 @@
     <string name="gopher_image_description">Gopher image</string>
     <string name="switch_language">Switch language</string>
     <string name="refresh">Refresh</string>
+    <string name="weather_info">Tap refresh to get weather</string>
+    <string name="weather_description">Weather in  Moscow is like: %s</string>
 </resources>

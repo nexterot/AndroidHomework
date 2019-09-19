@@ -5,4 +5,6 @@
     <string name="gopher_image_description">Изображение хомяка</string>
     <string name="switch_language">Сменить язык</string>
     <string name="refresh">Обновить</string>
+    <string name="weather_info">Обновите чтобы загрузить прогноз погоды</string>
+    <string name="weather_description">Погода в Москве: %s</string>
 </resources>
