@@ -7,8 +7,12 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import android.util.DisplayMetrics;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private final String API_KEY = "3862f0bc7ec07174878a543c189bd2a0";
     private final String MOSCOW_ID = "524901";
     private final String SAINT_PETERSBURG_ID = "498817";
-    private boolean lang;
 
     private TextView weatherInfoTextView;
     private RecyclerView recyclerView;
@@ -75,14 +78,18 @@ public class MainActivity extends AppCompatActivity {
 
     void switchLanguage() {
         Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
-        if (lang) {
+        Locale l = config.locale;
+        if (l.getDisplayLanguage().equals("английский")) {
             config.setLocale(new Locale("ru"));
+            Log.d("tag", "change lang ru");
         } else {
             config.setLocale(new Locale("en"));
+            Log.d("tag", "change lang en");
         }
-        lang = !lang;
-        res.updateConfiguration(config, null);
+        res.updateConfiguration(config, dm);
+        recreate();
     }
 
     public class requestInternet extends AsyncTask<URL, Void, ArrayList<String>> {
