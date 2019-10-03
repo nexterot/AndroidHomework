@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Uri uriPetersburg = Uri.parse(WEATHER_URL).buildUpon()
-                .appendQueryParameter("id", MOSCOW_ID)
+                .appendQueryParameter("id", SAINT_PETERSBURG_ID)
                 .appendQueryParameter("appid", API_KEY)
                 .build();
         URL urlPetersburg = null;

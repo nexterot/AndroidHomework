@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 class MyViewHolder extends RecyclerView.ViewHolder {
     TextView mTextView;
@@ -14,12 +15,8 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(v.getContext(), "you clicked RV's item", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    void setData(String data) {
-        mTextView.setText(data);
     }
 }
