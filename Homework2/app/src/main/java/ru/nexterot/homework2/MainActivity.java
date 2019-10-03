@@ -4,11 +4,15 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -33,12 +38,22 @@ public class MainActivity extends AppCompatActivity {
     private boolean lang;
 
     private TextView weatherInfoTextView;
+    private RecyclerView recyclerView;
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         weatherInfoTextView = findViewById(R.id.weather_info);
+
+        recyclerView = findViewById(R.id.recycler_list);
+        final LinearLayoutManager lm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(lm);
+
+        myAdapter = new MyAdapter();
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setHasFixedSize(true);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,15 +85,19 @@ public class MainActivity extends AppCompatActivity {
         res.updateConfiguration(config, null);
     }
 
-    public class requestInternet extends AsyncTask<URL, Void, String> {
+    public class requestInternet extends AsyncTask<URL, Void, ArrayList<String>> {
         @Override
-        protected String doInBackground(URL... urls) {
+        protected ArrayList<String> doInBackground(URL... urls) {
             try {
-                String responseStr = getResponseFromHttpUrl(urls[0]);
-                Log.d("tag", responseStr);
-                String weatherStr = getWeatherFromJson(responseStr);
-                Log.d("tag", weatherStr);
-                return weatherStr;
+                ArrayList<String> l = new ArrayList<>();
+                for (URL u : urls) {
+                    String responseStr = getResponseFromHttpUrl(u);
+                    Log.d("tag", responseStr);
+                    String weatherStr = getWeatherFromJson(responseStr);
+                    Log.d("tag", weatherStr);
+                    l.add(weatherStr);
+                }
+                return l;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,13 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            myAdapter.clear();
             super.onPreExecute();
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            weatherInfoTextView.setText(String.format(getString(R.string.weather_description), s));
-            super.onPostExecute(s);
+        protected void onPostExecute(ArrayList<String> l) {
+            myAdapter.setData(l);
+            super.onPostExecute(l);
         }
     }
 
@@ -103,19 +123,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void download() {
-        Uri uri = Uri.parse(WEATHER_URL).buildUpon()
+        Uri uriMoscow = Uri.parse(WEATHER_URL).buildUpon()
                 .appendQueryParameter("id", MOSCOW_ID)
                 .appendQueryParameter("appid", API_KEY)
                 .build();
-        URL url = null;
+        URL urlMoscow = null;
         try {
-            url = new URL(uri.toString());
+            urlMoscow = new URL(uriMoscow.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        if (url != null) {
-            new requestInternet().execute(url);
+
+        Uri uriPetersburg = Uri.parse(WEATHER_URL).buildUpon()
+                .appendQueryParameter("id", MOSCOW_ID)
+                .appendQueryParameter("appid", API_KEY)
+                .build();
+        URL urlPetersburg = null;
+        try {
+            urlPetersburg = new URL(uriPetersburg.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+
+        new requestInternet().execute(urlMoscow, urlPetersburg);
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
@@ -146,4 +176,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
 }
