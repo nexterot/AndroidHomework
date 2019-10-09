@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Homework4</string>
+    <string name="intents">Intents test</string>
+    <string name="next_activity">Next Activity</string>
+    <string name="open_website">open website</string>
+    <string name="open_maps">open maps</string>
+    <string name="share_text">share text</string>
+    <string name="call_phone">call phone</string>
+    <string name="this_is_second_activity">This is Second Activity</string>
+    <string name="finish">finish</string>
+</resources>
