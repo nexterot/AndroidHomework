@@ -106,8 +106,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
         if (mode == MODE_STATIC_VAR)
             weatherInfoTextView.setText(staticVar);
-        if (mode == MODE_ON_SAVE_INSTANCE)
-            weatherInfoTextView.setText(savedInstanceState.getString("data"));
+        if (mode == MODE_ON_SAVE_INSTANCE) {
+            if (savedInstanceState != null) {
+                weatherInfoTextView.setText(savedInstanceState.getString("data"));
+            }
+        }
     }
 
     @Override
