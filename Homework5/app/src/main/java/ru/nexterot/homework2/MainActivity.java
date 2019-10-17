@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
         if (mode == MODE_STATIC_VAR)
             weatherInfoTextView.setText(staticVar);
-
+        if (mode == MODE_ON_SAVE_INSTANCE)
+            weatherInfoTextView.setText(savedInstanceState.getString("data"));
     }
 
     @Override
@@ -161,7 +162,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("data", "kek");
+        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
+        if (mode == MODE_ON_SAVE_INSTANCE) {
+            staticVar = weatherInfoTextView.getText().toString();
+            outState.putString("data", "kek");
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
