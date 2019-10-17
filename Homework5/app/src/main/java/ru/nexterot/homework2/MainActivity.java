@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
     private final String API_KEY = "3862f0bc7ec07174878a543c189bd2a0";
     private final String MOSCOW_ID = "524901";
-    private final String SAINT_PETERSBURG_ID = "498817";
 
     private final int MODE_NO_SAVE = 1;
     private final int MODE_ON_SAVE_INSTANCE = 2;
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
 
-    static String staticVar;
+    static String staticVar = "";
 
 
     @Override
@@ -103,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 editor.apply();
             }
         });
+
+        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
+        if (mode == MODE_STATIC_VAR)
+            weatherInfoTextView.setText(staticVar);
+
     }
 
     @Override
@@ -112,29 +116,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (t == null)
             return;
         t.setText("onStart");
-        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
-        switch (mode) {
-            case MODE_NO_SAVE:
-                break;
-            case MODE_ON_SAVE_INSTANCE:
-                break;
-            case MODE_STATIC_VAR:
-                staticVar = t.getText().toString();
-                break;
-            default:
-        }
         super.onStart();
     }
-
-    @Override
-    protected void onRestart() {
-        Log.d("tag", "onRestart");
-        TextView t = findViewById(R.id.weather_info);
-        if (t != null)
-            t.setText("onRestart");
-        super.onRestart();
-    }
-
+    
     @Override
     protected void onStop() {
         Log.d("tag", "onStop");
@@ -159,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         TextView t = findViewById(R.id.weather_info);
         if (t != null)
             t.setText("onPause");
+        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
+        if (mode == MODE_STATIC_VAR)
+            staticVar = weatherInfoTextView.getText().toString();
         super.onPause();
     }
 
