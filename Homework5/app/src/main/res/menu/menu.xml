@@ -5,9 +5,9 @@
     <item
         android:id="@+id/refresh"
         android:title="@string/refresh"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/switch_language"
-        android:title="@string/switch_language"
+        android:id="@+id/settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
 </menu>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_list_preference_titles">
+        <item>"USD"</item>
+        <item>"RUB"</item>
+    </array>
+    <array name="settings_list_preference_values">
+        <item>"usd"</item>
+        <item>"rub"</item>
+    </array>
+</resources>

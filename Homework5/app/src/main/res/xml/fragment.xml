@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="ololo"
+        android:key="list"
+        android:title="Currency"
+        android:dialogTitle="Select currency"
+        android:entries="@array/settings_list_preference_titles"
+        android:entryValues="@array/settings_list_preference_values"
+        android:summary="Click to show a list to choose from"/>
+</PreferenceScreen>

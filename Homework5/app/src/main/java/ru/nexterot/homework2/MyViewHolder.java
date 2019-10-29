@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 class MyViewHolder extends RecyclerView.ViewHolder {
     TextView mTextView;
+    TextView mText2View;
 
     MyViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -18,5 +19,6 @@ class MyViewHolder extends RecyclerView.ViewHolder {
                 Toast.makeText(v.getContext(), "you clicked RV's item", Toast.LENGTH_SHORT).show();
             }
         });
+        mText2View = itemView.findViewById(R.id.text2);
     }
 }

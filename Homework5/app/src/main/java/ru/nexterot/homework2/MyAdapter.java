@@ -2,6 +2,7 @@ package ru.nexterot.homework2;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
-    private String mData;
+    private ArrayList<Pair<String,Double>> mData;
 
     MyAdapter() {
-        mData = "";
+        mData = new ArrayList<>();
     }
 
     @NonNull
@@ -26,21 +27,27 @@ class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        String str = mData;
+        String str = mData.get(i).first;
+        Double d = mData.get(i).second;
         myViewHolder.mTextView.setText(str);
+        myViewHolder.mText2View.setText("" + d);
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (mData == null) return 0;
+        return mData.size();
     }
 
     void clear() {
-        mData = "loading";
+        if (mData == null) {
+            return;
+        }
+        mData.clear();
         notifyDataSetChanged();
     }
 
-    void setData(String s) {
+    void setData(ArrayList<Pair<String,Double>> s) {
         mData = s;
         notifyDataSetChanged();
     }

@@ -1,12 +1,15 @@
 package ru.nexterot.homework2;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -15,16 +18,20 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.util.DisplayMetrics;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,25 +45,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
-    private final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
-    private final String API_KEY = "3862f0bc7ec07174878a543c189bd2a0";
-    private final String MOSCOW_ID = "524901";
-
-    private final int MODE_NO_SAVE = 1;
-    private final int MODE_ON_SAVE_INSTANCE = 2;
-    private final int MODE_STATIC_VAR = 3;
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Pair<String,Double>>>, SharedPreferences.OnSharedPreferenceChangeListener {
+    private final String WEATHER_URL = "http://api.coinlayer.com/live";
+    private final String API_KEY = "a6a6d07fbe5912e51a96fe3ffe136cc9";
 
     private static final int UNIQUE_LOADER_ID = 228;
 
-    private TextView weatherInfoTextView;
     private RecyclerView recyclerView;
     private MyAdapter myAdapter;
-
-    static String staticVar = "";
 
 
     @Override
@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.d("tag", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        weatherInfoTextView = findViewById(R.id.weather_info);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        String currency = sharedPreferences.getString("currency", "USD");
 
         recyclerView = findViewById(R.id.recycler_list);
         final LinearLayoutManager lm = new LinearLayoutManager(this);
@@ -74,102 +77,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setAdapter(myAdapter);
         recyclerView.setHasFixedSize(true);
 
-        Button b = findViewById(R.id.button);
-        b.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.id2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
-                int next_mode;
-                switch (mode) {
-                    case MODE_NO_SAVE:
-                        next_mode = MODE_ON_SAVE_INSTANCE;
-                        Toast.makeText(MainActivity.this, "SAVE INSTANCE", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MODE_ON_SAVE_INSTANCE:
-                        next_mode = MODE_STATIC_VAR;
-                        Toast.makeText(MainActivity.this, "STATIC VAR", Toast.LENGTH_SHORT).show();
-                        break;
-                    case MODE_STATIC_VAR:
-                        next_mode = MODE_NO_SAVE;
-                        Toast.makeText(MainActivity.this, "NO SAVE", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        next_mode = MODE_NO_SAVE;
-                        Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-                }
-                SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-                editor.putInt("mode", next_mode);
-                editor.apply();
+                refresh();
             }
         });
 
-        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
-        if (mode == MODE_STATIC_VAR)
-            weatherInfoTextView.setText(staticVar);
-        if (mode == MODE_ON_SAVE_INSTANCE) {
-            if (savedInstanceState != null) {
-                weatherInfoTextView.setText(savedInstanceState.getString("data"));
+        findViewById(R.id.id3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://coinlayer.com/terms";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        Log.d("tag", "onStart");
-        TextView t = findViewById(R.id.weather_info);
-        if (t == null)
-            return;
-        t.setText("onStart");
-        super.onStart();
-    }
-    
-    @Override
-    protected void onStop() {
-        Log.d("tag", "onStop");
-        TextView t = findViewById(R.id.weather_info);
-        if (t != null)
-            t.setText("onStop");
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("tag", "onDestroy");
-        TextView t = findViewById(R.id.weather_info);
-        if (t != null)
-            t.setText("onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d("tag", "onPause");
-        TextView t = findViewById(R.id.weather_info);
-        if (t != null)
-            t.setText("onPause");
-        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
-        if (mode == MODE_STATIC_VAR)
-            staticVar = weatherInfoTextView.getText().toString();
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d("tag", "onResume");
-        TextView t = findViewById(R.id.weather_info);
-        if (t != null)
-            t.setText("onResume");
-        super.onResume();
+        });
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        int mode = getPreferences(MODE_PRIVATE).getInt("mode", -1);
-        if (mode == MODE_ON_SAVE_INSTANCE) {
-            staticVar = weatherInfoTextView.getText().toString();
-            outState.putString("data", "kek");
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,34 +110,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (itemId == R.id.refresh) {
             refresh();
             return true;
-        } else if (itemId == R.id.switch_language) {
-            switchLanguage();
+        } else if (itemId == R.id.settings) {
+            openSettings();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    void switchLanguage() {
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration config = res.getConfiguration();
-        Locale l = config.locale;
-        if (l.getDisplayLanguage().equals("английский")) {
-            config.setLocale(new Locale("ru"));
-            Log.d("tag", "change lang ru");
-        } else {
-            config.setLocale(new Locale("en"));
-            Log.d("tag", "change lang en");
-        }
-        res.updateConfiguration(config, dm);
-        recreate();
+    void openSettings() {
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        startActivity(intent);
     }
 
     @SuppressLint("StaticFieldLeak")
     @NonNull
     @Override
-    public Loader<String> onCreateLoader(int i, final @Nullable Bundle args) {
-        return new AsyncTaskLoader<String>(this) {
+    public Loader<ArrayList<Pair<String,Double>>> onCreateLoader(int i, final @Nullable Bundle args) {
+        return new AsyncTaskLoader<ArrayList<Pair<String,Double>>>(this) {
             String url;
 
             @Override
@@ -229,44 +146,47 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Nullable
             @Override
-            public String loadInBackground() {
+            public ArrayList<Pair<String,Double>> loadInBackground() {
 
                 Log.d("tag", "lel");
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                String currency = sharedPreferences.getString("list", "RUB");
+                Log.d("tag", "currency is " + currency);
                 try {
                     Uri uriMoscow = Uri.parse(WEATHER_URL).buildUpon()
-                            .appendQueryParameter("id", url)
-                            .appendQueryParameter("appid", API_KEY)
+                            .appendQueryParameter("target", currency)
+                            .appendQueryParameter("symbols", url)
+                            .appendQueryParameter("access_key", API_KEY)
                             .build();
                     URL urlMoscow = null;
                     try {
                         urlMoscow = new URL(uriMoscow.toString());
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
-                        return "parsing url error";
+                        return null;
                     }
                     Log.d("tag", "mem");
                     String responseStr = getResponseFromHttpUrl(urlMoscow);
-                    String weatherStr = getWeatherFromJson(responseStr);
-                    Log.d("tag", weatherStr);
+                    Log.d("tag", responseStr);
+                    ArrayList<Pair<String,Double>> weatherStr = getWeatherFromJson(responseStr);
                     return weatherStr;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return "network error";
+                return null;
             }
         };
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<String> loader, String s) {
+    public void onLoadFinished(@NonNull Loader<ArrayList<Pair<String,Double>>> loader, ArrayList<Pair<String,Double>> s) {
         // similar to onPostExecute of AsyncTask
         myAdapter.setData(s);
-
         Log.d("tag", "ololo");
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<String> loader) {
+    public void onLoaderReset(@NonNull Loader<ArrayList<Pair<String,Double>>> loader) {
 
     }
 
@@ -276,9 +196,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     void download() {
-        //new requestInternet().execute(urlMoscow, urlPetersburg);
         Bundle asyncTaskLoaderParams = new Bundle();
-        asyncTaskLoaderParams.putString("data", MOSCOW_ID);
+        String samples = ((EditText)findViewById(R.id.id1)).getText().toString();
+        Log.d("tag", samples);
+        asyncTaskLoaderParams.putString("data", samples);
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<String> loader = loaderManager.getLoader(UNIQUE_LOADER_ID);
         if (loader == null) {
@@ -305,16 +226,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    String getWeatherFromJson(String jsonStr) {
+    ArrayList<Pair<String,Double>> getWeatherFromJson(String jsonStr) {
         try {
             JSONObject weatherObj = new JSONObject(jsonStr);
-            JSONArray weather_predictions = weatherObj.getJSONArray("weather");
-            String weather = weather_predictions.getJSONObject(0).getString("main");
-            return weather;
+            JSONObject weatherRates = weatherObj.getJSONObject("rates");
+            Iterator<String> itKeys = weatherRates.keys();
+            ArrayList<Pair<String,Double>> keys = new ArrayList<>();
+            while (itKeys.hasNext()) {
+                String nextKey = itKeys.next();
+                Double t = weatherRates.getDouble(nextKey);
+                keys.add(new Pair<>(nextKey, t));
+            }
+            return keys;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        Log.d("tag", "MainActivity: onSharedPreferenceChanged");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
 }
+
