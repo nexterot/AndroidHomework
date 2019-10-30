@@ -1,4 +1,4 @@
-package ru.nexterot.homework6;
+package com.example.lab6;
 
 import org.junit.Test;
 

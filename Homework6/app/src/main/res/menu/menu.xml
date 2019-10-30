@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/preferences"
-        android:title="@string/preferences"
-        app:showAsAction="never" />
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"/>
 </menu>
