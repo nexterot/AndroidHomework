@@ -31,14 +31,12 @@ public class SecondActivity extends AppCompatActivity implements SharedPreferenc
     @Override
     protected void onPause() {
         super.onPause();
-
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
     }
 

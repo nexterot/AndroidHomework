@@ -29,8 +29,7 @@ class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         String str = mData.get(i).first;
         Double d = mData.get(i).second;
-        myViewHolder.mTextView.setText(str);
-        myViewHolder.mText2View.setText("" + d);
+        myViewHolder.mTextView.setText(str + " " + d);
     }
 
     @Override

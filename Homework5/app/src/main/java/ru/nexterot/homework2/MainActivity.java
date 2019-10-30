@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         String currency = sharedPreferences.getString("currency", "USD");
+        Log.d("tag", currency);
 
         recyclerView = findViewById(R.id.recycler_list);
         final LinearLayoutManager lm = new LinearLayoutManager(this);
