@@ -58,10 +58,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         textView.setText(specText);
         if (showText) {
-            textView.setVisibility(View.VISIBLE);
+            Log.d("tag", "rotate 180.0f");
+            imageView.setRotation(180.0f);
         }
         else {
-            textView.setVisibility(View.GONE);
+            Log.d("tag", "rotate 0.0f");
+            imageView.setRotation(0.0f);
         }
     }
 
@@ -87,12 +89,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return super.onOptionsItemSelected(item);
     }
 
-    private void restartActivity() {
-        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     void switchLanguage (String s) {
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -111,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        Log.d("tag", "MainActivity: onSharedPreferenceChanged");
         String language = sharedPreferences.getString("list", "ru");
         Boolean showBass = sharedPreferences.getBoolean("bool", true);
 
@@ -129,10 +126,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         textView.setText(specText);
         if (showText) {
-            textView.setVisibility(View.VISIBLE);
+            Log.d("tag", "rotate 180.0f");
+            imageView.setRotation(180.0f);
         }
         else {
-            textView.setVisibility(View.GONE);
+            Log.d("tag", "rotate 0.0f");
+            imageView.setRotation(0.0f);
         }
     }
 }

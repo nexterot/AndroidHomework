@@ -3,6 +3,7 @@ package com.example.lab6;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.EditTextPreference;
@@ -12,7 +13,7 @@ import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment {
     private SharedPreferences sharedPreferences;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         editPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof String) {
+                    Toast.makeText(getContext(), "Please, type non-empty string!", Toast.LENGTH_LONG).show();
+                    return !((String)newValue).isEmpty();
+                }
                 return true;
             }
         });
@@ -48,18 +53,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.d("part", "OnSharedPreferenceChanged");
-        Preference preference = findPreference(s);
-        if (preference != null) {
-            if (!(preference instanceof CheckBoxPreference) && !(preference instanceof SwitchPreference)) {
-                String value = sharedPreferences.getString(preference.getKey(), "");
-                setPreferenceSummary(preference, value);
-            }
-        }
     }
 
     private void setPreferenceSummary(Preference preference, String value) {

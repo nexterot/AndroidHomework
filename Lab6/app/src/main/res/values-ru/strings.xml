@@ -3,4 +3,17 @@
     <string name="app_name">Лаба 6</string>
     <string name="settings">Настройки</string>
     <string name="list_setting">Список</string>
+    <string name="checkbox_summary_off">Скрытно</string>
+    <string name="checkbox_summary_on">Видно</string>
+    <string name="checkbox_title">Показать картинку</string>
+    <string name="edit_summary">Нажмите чтобы отобразить</string>
+    <string name="edit_title">Введите текст</string>
+    <string name="list_dialog_title">Выберите язык</string>
+    <string name="list_summary">Нажмите чтобы выбрать из списка</string>
+    <string name="switch_summary">Нажмите чтобы перевернуть изображение</string>
+    <string name="switch_summary_on">Обычное</string>
+    <string name="swtich_summary_off">Перевернутое</string>
+    <string name="list_title">Список языков</string>
+    <string name="switch_title" translatable="false">Перевернуть</string>
+    <string name="edit_ttitle">Изменить текст</string>
 </resources>

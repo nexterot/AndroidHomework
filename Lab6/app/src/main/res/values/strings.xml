@@ -2,4 +2,17 @@
     <string name="app_name">Lab6</string>
     <string name="settings">Settings</string>
     <string name="list_setting">List</string>
+    <string name="checkbox_summary_on">Visible</string>
+    <string name="checkbox_summary_off">Invisible</string>
+    <string name="checkbox_title">Show picture</string>
+    <string name="list_title">Language List</string>
+    <string name="list_dialog_title">Select language</string>
+    <string name="list_summary">Click to show a list to choose from</string>
+    <string name="edit_title">Enter a text</string>
+    <string name="edit_summary">Click to show a text entry dialog</string>
+    <string name="edit_ttitle">EditText Preference</string>
+    <string name="switch_title">Switch Preference</string>
+    <string name="switch_summary">Click to switch on or off</string>
+    <string name="switch_summary_on">Normal</string>
+    <string name="swtich_summary_off">Flipped</string>
 </resources>

@@ -3,29 +3,29 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="bool"
-        android:title="Show picture"
-        android:summaryOff="Hidden"
-        android:summaryOn="Visible">
+        android:title="@string/checkbox_title"
+        android:summaryOff="@string/checkbox_summary_off"
+        android:summaryOn="@string/checkbox_summary_on">
     </CheckBoxPreference>
-    <ListPreference
-        android:defaultValue="@string/list_setting"
-        android:key="list"
-        android:title="Language List"
-        android:dialogTitle="Select language"
-        android:entries="@array/settings_list_preference_titles"
-        android:entryValues="@array/settings_list_preference_values"
-        android:summary="Click to show a list to choose from"/>
-    <EditTextPreference
-        android:defaultValue="3"
-        android:dialogTitle="Enter a text"
-        android:key="text"
-        android:summary="Click to show a text entry dialog"
-        android:title="EditText Preference"/>
     <SwitchPreference
         android:defaultValue="false"
         android:key="switch"
-        android:title="Switch Preference"
-        android:summary="Click to switch on or off"
-        android:summaryOff="Hidden"
-        android:summaryOn="Visible"/>
+        android:title="@string/switch_title"
+        android:summary="@string/switch_summary"
+        android:summaryOff="@string/switch_summary_on"
+        android:summaryOn="@string/swtich_summary_off"/>
+    <EditTextPreference
+        android:defaultValue="..."
+        android:dialogTitle="@string/edit_title"
+        android:key="text"
+        android:summary="@string/edit_summary"
+        android:title="@string/edit_ttitle"/>
+    <ListPreference
+        android:defaultValue="@string/list_setting"
+        android:key="list"
+        android:title="@string/list_title"
+        android:dialogTitle="@string/list_dialog_title"
+        android:entries="@array/settings_list_preference_titles"
+        android:entryValues="@array/settings_list_preference_values"
+        android:summary="@string/list_summary"/>
 </PreferenceScreen>
