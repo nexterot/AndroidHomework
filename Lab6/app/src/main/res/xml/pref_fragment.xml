@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="bool"
+        android:title="Show picture"
+        android:summaryOff="Hidden"
+        android:summaryOn="Visible">
+    </CheckBoxPreference>
+    <ListPreference
+        android:defaultValue="@string/list_setting"
+        android:key="list"
+        android:title="Language List"
+        android:dialogTitle="Select language"
+        android:entries="@array/settings_list_preference_titles"
+        android:entryValues="@array/settings_list_preference_values"
+        android:summary="Click to show a list to choose from"/>
+    <EditTextPreference
+        android:defaultValue="3"
+        android:dialogTitle="Enter a text"
+        android:key="text"
+        android:summary="Click to show a text entry dialog"
+        android:title="EditText Preference"/>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch"
+        android:title="Switch Preference"
+        android:summary="Click to switch on or off"
+        android:summaryOff="Hidden"
+        android:summaryOn="Visible"/>
+</PreferenceScreen>

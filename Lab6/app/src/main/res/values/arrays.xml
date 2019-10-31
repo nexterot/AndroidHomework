@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_list_preference_titles">
+        <item>"Russian"</item>
+        <item>"English"</item>
+    </array>
+    <array name="settings_list_preference_values">
+        <item>"ru"</item>
+        <item>"en"</item>
+    </array>
+</resources>
