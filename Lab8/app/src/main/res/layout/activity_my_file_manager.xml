@@ -7,27 +7,37 @@
     android:orientation="vertical"
     tools:context=".MyFileManager">
 
-    <Button
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/button_root"
-        android:text="Root dir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
-    <EditText
-        android:id="@+id/edit"
-        android:layout_gravity="center_horizontal"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:hint="text.txt"
-        android:minWidth="100dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
-    <Button
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/button_new_file"
-        android:text="NEW FILE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/edit"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="text.txt"
+            android:minWidth="100dp" />
+
+        <Button
+            android:layout_toEndOf="@+id/edit"
+            android:id="@+id/button_new_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NEW FILE" />
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:id="@+id/button_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Root dir" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/text"
