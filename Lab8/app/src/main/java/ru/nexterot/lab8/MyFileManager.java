@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ public class MyFileManager extends ListActivity {
 
     TextView textView;
     ArrayAdapter adapter;
+    File currentFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,19 @@ public class MyFileManager extends ListActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent kek = new Intent(MyFileManager.this, MyFileManager.class);
-                        startActivityForResult(kek, 228);
+                        String fileName = ((EditText)findViewById(R.id.edit)).getEditableText().toString();
+                        if (currentFile.isDirectory() && !fileName.isEmpty()) {
+                            File newFile = new File(currentFile, fileName);
+                            try {
+                                boolean res = newFile.createNewFile();
+                                Log.d("TAG", "create new file: " + res);
+                            } catch (IOException e) {
+                                Log.d("TAG", "create new file failed with error=" + e.toString());
+                            }
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        }
                     }
                 }
         );
@@ -61,6 +75,7 @@ public class MyFileManager extends ListActivity {
             if (path != null) {
                 Log.d("TAG", "path is: " + path);
                 File rootFile = new File(path);
+                currentFile = rootFile;
                 if (! rootFile.exists()) {
                     Toast.makeText(this, "Error: path " + path + " not found", Toast.LENGTH_LONG).show();
                     Log.d("TAG",  "Error: path " + path + " not found");
@@ -80,6 +95,7 @@ public class MyFileManager extends ListActivity {
                 }
             } else {
                 File rootDir = Environment.getExternalStorageDirectory();
+                currentFile = rootDir;
                 textView.setText(rootDir.getPath());
                 File[] files = rootDir.listFiles();
                 if (files != null) {
@@ -96,36 +112,18 @@ public class MyFileManager extends ListActivity {
 
     }
 
-    private static final int WRITE_REQUEST_CODE = 43;
-    private void createFile(String mimeType, String fileName) {
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
-        // Filter to only show results that can be "opened", such as
-        // a file (as opposed to a list of contacts or timezones).
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        // Create a file with the requested MIME type.
-        intent.setType(mimeType);
-        intent.putExtra(Intent.EXTRA_TITLE, fileName);
-        startActivityForResult(intent, WRITE_REQUEST_CODE);
-    }
-
-
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         if (requestCode == 228 && resultCode == RESULT_OK) {
             String name = data.getStringExtra("name");
             String content = data.getStringExtra("content");
-            File newFile = new File(textView.getText() + "/" + name);
-            newFile.
 
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
         }
     }
+
+ */
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {

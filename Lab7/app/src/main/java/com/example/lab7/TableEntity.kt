@@ -1,4 +1,4 @@
-package com.example.koshelev.labs.javalab7
+package com.example.lab7
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
